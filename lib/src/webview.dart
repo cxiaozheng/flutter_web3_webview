@@ -177,6 +177,7 @@ class Web3Webview extends StatefulWidget {
       Size newContentSize)? onContentSizeChanged;
 
   final Future<List<String>> Function()? ethAccounts;
+  final Future<List<String>> Function()? ethRequestAccounts;
   final Future<int> Function()? ethChainId;
   final Future<String> Function(JsTransactionObject data)? ethSendTransaction;
   final Future<String> Function(String data)? ethSign;
@@ -265,6 +266,7 @@ class Web3Webview extends StatefulWidget {
       this.onMicrophoneCaptureStateChanged,
       this.onContentSizeChanged,
       this.ethAccounts,
+      this.ethRequestAccounts,
       this.ethChainId,
       this.ethSendTransaction,
       this.ethSign,
@@ -389,8 +391,9 @@ class Web3WebviewState extends State<Web3Webview> {
 
     switch (item.method) {
       case 'eth_accounts':
-      case 'eth_requestAccounts':
         return _ethAccounts();
+      case 'eth_requestAccounts':
+        return _ethRequestAccounts();
 
       case 'eth_chainId':
         return _ethChainId();
@@ -431,6 +434,10 @@ class Web3WebviewState extends State<Web3Webview> {
   Future<List<String>> _ethAccounts() async {
     if (widget.ethAccounts == null) throw Exception('Invalid wallet');
     return widget.ethAccounts!();
+  }
+  Future<List<String>> _ethRequestAccounts() async {
+    if (widget.ethRequestAccounts == null) throw Exception('Invalid wallet');
+    return widget.ethRequestAccounts!();
   }
 
   /// Get eth chain id.
